@@ -2,8 +2,15 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    background-color: rgb(5, 6, 6);
 }
 
+h1{
+    color: white;
+}
+span{
+    color: white;
+}
 .page-section {
     padding: 20px;
     margin: 20px 0;
@@ -11,13 +18,63 @@ body {
 }
 
 #section1 {
-    background-color: #7fffd4;
+    background-color: #0e6e4e;
+    border-color: black;
 }
 
 #section2 {
-    background-color: #ffe6e6;
+    background-color: #6b0423;
+    border-color: black;
 }
 
 #section3 {
-    background-color: #e6ffe6;
+    background-color: #6f270b;
+    border-color: black;
+}
+
+#counter {
+}
+
+.btn {
+    background-color: rgba(244, 238, 238, 0.874);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    z-index: 2;
+  }
+  .btn:hover {
+    color: rgb(137, 133, 133);
+    background-color: rgb(0, 0, 0);
+  }
+
+.box {
+  width: 90px;
+  height: 50px;
+  background-color: rgb(94, 18, 18);
+  position: relative;
+  animation: move 15s infinite;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+@keyframes move {
+  0% { left: 0; }
+  50% { left: 1200px; }
+  100% { left: 0; }
+}
+
+#lightningCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Higher than trail canvas */
+}
+
+#trailCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0; /* Lower than lightning canvas */
 }
