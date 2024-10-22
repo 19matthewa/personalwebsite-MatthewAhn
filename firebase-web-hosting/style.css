@@ -33,10 +33,14 @@ span{
 }
 
 #counter {
+    position: relative; 
+    overflow: hidden
 }
 
 .btn {
-    background-color: rgba(244, 238, 238, 0.874);
+    width: 170px; 
+    height: 66px;
+    background-color: rgba(244, 238, 238, 0);
     border: none;
     padding: 10px 20px;
     cursor: pointer;
@@ -44,26 +48,28 @@ span{
     z-index: 2;
   }
   .btn:hover {
-    color: rgb(137, 133, 133);
-    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0);
   }
 
-.box {
-  width: 90px;
-  height: 50px;
-  background-color: rgb(94, 18, 18);
-  position: relative;
-  animation: move 15s infinite;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;  
-}
-@keyframes move {
-  0% { left: 0; }
-  50% { left: 1200px; }
-  100% { left: 0; }
-}
+  .box {
+    width: 200px; 
+    height: 100px; 
+    background-image: url('https://t3.ftcdn.net/jpg/05/90/19/70/360_F_590197077_mI7ZqgdT9E3uDCpbtjLeSv4dAvWVCpVZ.png');
+    background-size: cover; /* Make the image cover the entire box */
+    position: relative;
+    animation: move 20s infinite; /* Keep the animation */
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    border: none; /* Remove any border if it exists */
+  }
+  @keyframes move {
+    0% { left: 0; }
+    50% { left: 1200px; }
+    100% { left: 0; }
+  }
+  
 
 #lightningCanvas {
     position: fixed;
@@ -77,4 +83,12 @@ span{
     top: 0;
     left: 0;
     z-index: 0; /* Lower than lightning canvas */
+}
+#starCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0; /* Background layer */
 }
