@@ -92,3 +92,14 @@ span{
     height: 100%;
     z-index: 0; /* Background layer */
 }
+#gameContainer {
+    margin-top: 20px; /* Space above the game canvas */
+}
+
+#gameCanvas {
+    border: 2px solid black; /* Black border around the game */
+    background-color: #3a99d8; /* Light gray background for the game */
+    width: 80%; /* Set canvas width */
+    max-width: 800px; /* Max width for larger screens */
+    height: auto; /* Maintain aspect ratio */
+}
