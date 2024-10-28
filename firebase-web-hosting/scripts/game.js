@@ -348,87 +348,98 @@ class KoopaTroopa {
         this.y = y;
         this.width = 40;
         this.height = 40;
-        this.speed = 2; // Speed before entering shell (same as Goomba)
-        this.normalSpeed = 3; // Normal speed after entering shell
-        this.direction = 1; // 1 for right, -1 for left
+        this.speed = 2; // Normal walking speed (same as Goomba)
+        this.shellSpeed = 3; // Faster speed when in moving shell form
+        this.direction = 1;
         this.grounded = true;
-        this.inShell = false; // If the Koopa is in its shell
-        this.shellTime = 0; // Timer to track how long it's been in shell
-        this.shellDuration = 10000; // 10 seconds in milliseconds
+        this.state = 'normal'; // 'normal', 'shell', 'stoppedShell'
+        this.stateTimer = 0;
+        this.stateDuration = 10000; // 10 seconds in shell state
+        this.stateTransitionDelay = 500; // 500ms transition delay
+        this.lastStateChange = 0; // Track when the last state change occurred
     }
 
     update() {
-        if (!this.inShell) {
-            // Move back and forth at Goomba speed
-            this.x += this.speed * this.direction;
+        const currentTime = Date.now();
+        const timeSinceStateChange = currentTime - this.lastStateChange;
+        
+        // Update position based on current state
+        switch (this.state) {
+            case 'normal':
+                this.x += this.speed * this.direction;
+                if (this.x <= 0 || this.x + this.width >= width) {
+                    this.direction *= -1;
+                }
+                break;
 
-            // Change direction if hitting a wall
-            if (this.x <= 0 || this.x + this.width >= width) {
-                this.direction *= -1;
+            case 'shell':
+                this.x += this.shellSpeed * this.direction;
+                if (this.x <= 0 || this.x + this.width >= width) {
+                    this.direction *= -1;
+                }
+                break;
+
+            case 'stoppedShell':
+                if (currentTime - this.stateTimer > this.stateDuration) {
+                    this.changeState('normal');
+                }
+                break;
+        }
+
+        // Check collision with player only if we're not in transition period
+        if (timeSinceStateChange > this.stateTransitionDelay && this.collidesWith(player)) {
+            if (this.state== 'stoppedShell'){
+                this.changeState('shell');
+                this.direction = player.x < this.x ? 1 : -1;
             }
-
-            // Check collision with player
-            if (this.collidesWith(player)) {
-                if (!player.grounded) { // If player jumps on Koopa
-                    if (!player.invincible) { // Check if the player is invincible
-                        player.invincible = true; // Set invincible flag
-                        player.invincibilityTimer = player.invincibilityDuration;
-                        this.inShell = true; // Retreat into shell
-                        this.shellTime = Date.now(); // Start timer
-                    }
-                } else if (!player.invincible) { // Player is on the ground and not invincible
-                    if (player.state == 'big') {
-                        player.invincible = true; // Set invincible flag
-                        player.invincibilityTimer = player.invincibilityDuration;
-                        player.state = 'small';
-                    } else {
-                        player.health -= 1; // Deal damage to player
-                        player.invincible = true; // Set invincible flag
-                        player.invincibilityTimer = player.invincibilityDuration;
-                        player.x = 50; // Respawn or reposition player
-                        player.y = 550;
-                    }
+            if (!player.grounded) {
+                // Player hit Koopa from above
+                player.velocityY = -8; // Small bounce
+                
+                switch (this.state) {
+                    case 'normal':
+                        this.changeState('shell');
+                        this.direction = player.x < this.x ? 1 : -1;
+                        break;
+                    case 'shell':
+                        this.changeState('stoppedShell');
+                        break;
+                    case 'stoppedShell':
+                        this.changeState('shell');
+                        this.direction = player.x < this.x ? 1 : -1;
+                        break;
+                }
+            } else if (this.state !== 'stoppedShell' && !player.invincible) {
+                // Player touched dangerous state Koopa
+                if (player.state === 'big') {
+                    player.state = 'small';
+                    player.invincible = true;
+                    player.invincibilityTimer = player.invincibilityDuration;
+                } else {
+                    player.health -= 1;
+                    player.invincible = true;
+                    player.invincibilityTimer = player.invincibilityDuration;
+                    player.x = 50;
+                    player.y = 550;
                 }
             }
-        } else {
-            // When in shell, move at normal speed
-            this.speed = this.normalSpeed; // Set speed to normal
-            this.x += this.speed * this.direction; // Maintain movement pattern
+        }
 
-            // Change direction if hitting a wall
-            if (this.x <= 0 || this.x + this.width >= width) {
-                this.direction *= -1;
-            }
-
-            // Check if 10 seconds have passed
-            if (Date.now() - this.shellTime > this.shellDuration) {
-                this.inShell = false; // Revert to normal state
-            }
-
-            // Check for collision with Goomba
+        // Check for collision with Goomba only when in moving shell state
+        if (this.state === 'shell' && timeSinceStateChange > this.stateTransitionDelay) {
             enemies.forEach(enemy => {
                 if (enemy instanceof Goomba && this.collidesWith(enemy)) {
-                    // If the Koopa Troopa in shell collides with Goomba, defeat it
-                    enemies.splice(enemies.indexOf(enemy), 1); // Remove Goomba
+                    enemies.splice(enemies.indexOf(enemy), 1);
                 }
             });
+        }
+    }
 
-            // Check collision with player
-            if (this.collidesWith(player)&&(!player.invincible)) {
-                if (!player.invincible) { // Player is on the ground and not invincible
-                    if (player.state == 'big') {
-                        player.invincible = true; // Set invincible flag
-                        player.invincibilityTimer = player.invincibilityDuration;
-                        player.state = 'small';
-                    } else {
-                        player.health -= 1; // Deal damage to player
-                        player.invincible = true; // Set invincible flag
-                        player.invincibilityTimer = player.invincibilityDuration;
-                        player.x = 50; // Respawn or reposition player
-                        player.y = 550;
-                    }
-                }
-            }
+    changeState(newState) {
+        this.state = newState;
+        this.lastStateChange = Date.now();
+        if (newState === 'stoppedShell') {
+            this.stateTimer = Date.now();
         }
     }
 
@@ -442,7 +453,25 @@ class KoopaTroopa {
     }
 
     render() {
-        ctx.fillStyle = this.inShell ? 'green' : 'red'; // Koopa color based on state
+        const timeSinceStateChange = Date.now() - this.lastStateChange;
+        
+        // Flashing effect during transition
+        if (timeSinceStateChange < this.stateTransitionDelay && Math.floor(timeSinceStateChange / 100) % 2 === 0) {
+            ctx.fillStyle = 'white'; // Flash white during transition
+        } else {
+            // Normal colors based on state
+            switch (this.state) {
+                case 'normal':
+                    ctx.fillStyle = 'red';
+                    break;
+                case 'shell':
+                    ctx.fillStyle = 'green';
+                    break;
+                case 'stoppedShell':
+                    ctx.fillStyle = 'gray';
+                    break;
+            }
+        }
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }
