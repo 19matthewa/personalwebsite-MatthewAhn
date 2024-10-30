@@ -349,12 +349,12 @@ class KoopaTroopa {
         this.width = 40;
         this.height = 40;
         this.speed = 2; // Normal walking speed (same as Goomba)
-        this.shellSpeed = 3; // Faster speed when in moving shell form
+        this.shellSpeed = 4; // Faster speed when in moving shell form
         this.direction = 1;
         this.grounded = true;
         this.state = 'normal'; // 'normal', 'shell', 'stoppedShell'
         this.stateTimer = 0;
-        this.stateDuration = 10000; // 10 seconds in shell state
+        this.stateDuration = 8000; // 10 seconds in shell state
         this.stateTransitionDelay = 500; // 500ms transition delay
         this.lastStateChange = 0; // Track when the last state change occurred
     }
@@ -388,10 +388,6 @@ class KoopaTroopa {
 
         // Check collision with player only if we're not in transition period
         if (timeSinceStateChange > this.stateTransitionDelay && this.collidesWith(player)) {
-            if (this.state== 'stoppedShell'){
-                this.changeState('shell');
-                this.direction = player.x < this.x ? 1 : -1;
-            }
             if (!player.grounded) {
                 // Player hit Koopa from above
                 player.velocityY = -8; // Small bounce

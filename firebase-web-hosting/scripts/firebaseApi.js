@@ -51,7 +51,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDO8wGSznq10OMPOwJrAeoPImj7wrfx11Q",
   authDomain: "personalwebsite-matthewahn.firebaseapp.com",
   projectId: "personalwebsite-matthewahn",
-  storageBucket: "personalwebsite-matthewahn.appspot.com",
+  storageBucket: "personalwebsite-matthewahn.firebasestorage.app",
   messagingSenderId: "7098038487",
   appId: "1:7098038487:web:85bc0fc56e581133c95892",
   measurementId: "G-GMQW118R7V"
@@ -61,9 +61,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore();
-
-
-
 
 
 // Get a reference to the "students" collection
