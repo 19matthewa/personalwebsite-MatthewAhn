@@ -32,7 +32,14 @@ span{
     border-color: black;
 }
 
-#counter {
+.InBtn{
+    z-index: 3;
+    background-color: #24dc6b;
+}.InBtn:hover {
+    background-color: rgb(204, 25, 25);
+  }
+
+#Hello {
     position: relative; 
     overflow: hidden
 }
@@ -102,4 +109,9 @@ span{
     width: 80%; /* Set canvas width */
     max-width: 800px; /* Max width for larger screens */
     height: auto; /* Maintain aspect ratio */
+    z-index: 0
+}
+
+#lightningCanvas, #trailCanvas {
+    pointer-events: none; /* Allow mouse events to pass through */
 }

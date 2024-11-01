@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matthew's Website</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="scripts/firebaseApi.js"></script>
     <script defer src="scripts/main.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,19 +14,23 @@
     <script defer src="scripts/game.js"></script>
 </head>
 <body>
-    <script type="module" src="scripts/firebaseApi.js"></script>
     <div class="box">
         <button class="btn"></button>
         <canvas id="lightningCanvas"></canvas>
     </div>
 
     <canvas id="trailCanvas"></canvas>
+    <!-- index of zero -->
 
-    <section id="section1" class="page-section">
+    <button class="InBtn">Sign in with Google</button>
+    <!-- index of 3 -->
+    <div id="userInfo"></div>
+
+    <!-- <section id="section1" class="page-section">
         <h1>Section 1</h1>
         <p>Welcome to this Website</p>
     </section>
-    
+
     <section id="section2" class="page-section">
         <h1>Section 2</h1>
         <p>there is a cloud</p>
@@ -34,13 +39,13 @@
     <section id="section3" class="page-section">
         <h1>Section 3</h1>
         <p>I wonder how many times the website will be visited before I deploy again</p>
-    </section>
+    </section> -->
 
-    <section id="counter" class="page-section">
+    <section id="Hello" class="page-section">
         <canvas id="starCanvas"></canvas>
-        <h1>Counter</h1>
-        <p>Count: <span id="count">0</span></p>
-    
+        <h1>Hello, have fun?</h1>
+        <!-- <p>Count: <span id="count">0</span></p> -->
+         
     </section>
         <div id="gameContainer"> 
          <canvas id="gameCanvas"></canvas> 
