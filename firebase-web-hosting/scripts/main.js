@@ -2,8 +2,8 @@ class Main {
     constructor() {
         this.pageViewsKey = 'pageViewsCount';
         this.initializeCounter();
-        this.displayCount();
         this.setupSignInButton();
+        this.setUpSignOutButton();
         this.setupLightningButton(); // Initialize the lightning effect button
     }
 
@@ -14,6 +14,10 @@ class Main {
         signInButton.addEventListener("click", window.signInUser);
     }
     
+    setUpSignOutButton() {
+        const signInButton = document.querySelector(".OutBtn");
+        signInButton.addEventListener("click", window.signOutUser);
+    }
 
     initializeCounter() {
         if (!localStorage.getItem(this.pageViewsKey)) {

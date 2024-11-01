@@ -8,6 +8,12 @@ body {
 h1{
     color: white;
 }
+h3{
+    color: white;
+}
+p{
+    color: white;
+}
 span{
     color: white;
 }
@@ -39,6 +45,13 @@ span{
     background-color: rgb(204, 25, 25);
   }
 
+.OutBtn{
+    z-index: 3;
+    background-color: #24dc6b;
+}.OutBtn:hover {
+    background-color: rgb(204, 25, 25);
+  }
+  
 #Hello {
     position: relative; 
     overflow: hidden
